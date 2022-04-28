@@ -52,9 +52,9 @@ router.delete("/all", async (req, res) => {
 });
 
 router.patch("/", async (req, res) => {
-  //   if (!req.user.isAdmin()) {
-  //     return res.send("You have no authorization.");
-  //   }
+  // if (!req.user.isAdmin()) {
+  //   return res.send("You have no authorization.");
+  // }
 
   let seats = await Seat.find({});
   if (!seats) {

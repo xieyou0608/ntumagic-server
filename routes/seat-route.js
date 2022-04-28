@@ -10,7 +10,7 @@ router.use((req, res, next) => {
 router.get("/", async (req, res) => {
   seats = await Seat.find({});
   if (seats) {
-    console.log(seats);
+    // console.log(seats);
     res.status(200).send(seats);
   } else {
     res.status(500).send("Please try again");
@@ -54,8 +54,7 @@ router.patch("/booking", async (req, res) => {
 
   seats.forEach((seat) => {
     if (seat.sold != 0) {
-      res.status(400);
-      return res.json({
+      return res.status(400).send({
         success: false,
         message: "Seat already been sold.",
       });
