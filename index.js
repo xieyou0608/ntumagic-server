@@ -47,6 +47,6 @@ app.use(
 
 // )
 
-app.listen(8080, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server running on port 8080");
 });
