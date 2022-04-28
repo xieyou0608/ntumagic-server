@@ -52,7 +52,8 @@ router.patch("/booking", async (req, res) => {
     return res.status(404).send("Cannot find seat.");
   }
 
-  for (seat in seats) {
+  for (seat of seats) {
+    //do not use for in loop
     if (seat.sold != 0) {
       return res.status(400).send({
         success: false,
