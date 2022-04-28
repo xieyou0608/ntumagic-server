@@ -52,14 +52,14 @@ router.patch("/booking", async (req, res) => {
     return res.status(404).send("Cannot find seat.");
   }
 
-  seats.forEach((seat) => {
+  for (seat in seats) {
     if (seat.sold != 0) {
       return res.status(400).send({
         success: false,
         message: "Seat already been sold.",
       });
     }
-  });
+  }
 
   //   if(seat.buyer.equals(req.user._id) || req.user.isAdmin())
   Seat.updateMany(
