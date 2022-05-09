@@ -6,6 +6,7 @@ dotenv.config();
 const authRoute = require("./routes").auth_route;
 const seatRoute = require("./routes").seat_route;
 const adminRoute = require("./routes").admin_route;
+const audienceRoute = require("./routes").audience_route;
 const passport = require("passport");
 require("./config/passport")(passport);
 const cors = require("cors");
@@ -36,16 +37,16 @@ app.use(
 );
 
 app.use(
+  "/api/audience",
+  passport.authenticate("jwt", { session: false }),
+  audienceRoute
+);
+
+app.use(
   "/api/admin",
   passport.authenticate("jwt", { session: false }),
   adminRoute
 );
-
-// app.use(
-//   "api/admin",
-//   passport.authenticate("jwt", { session: false }),
-
-// )
 
 app.listen(process.env.PORT, () => {
   console.log("Server is running.");

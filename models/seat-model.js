@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const seatSchema = new mongoose.Schema({
   area: {
     type: String,
-    enum: ["A", "B", "C", "D", "X"],
+    enum: ["A", "B", "C", "D", "X", "Sign"],
     required: true,
   },
   row: {
@@ -16,16 +16,12 @@ const seatSchema = new mongoose.Schema({
   },
   position: {
     type: Object,
-    required: true,
+    // required: true,
   },
-  //   isSeat: {
-  //     type: Boolean,
-  //     required: true,
-  //   },
   sold: {
     type: Number, // 0:空位, 1:已劃位, 2:已付款
     default: 0,
-    required: true,
+    // required: true,
   },
   buyer: {
     type: mongoose.Schema.Types.ObjectId,

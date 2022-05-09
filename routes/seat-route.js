@@ -40,7 +40,7 @@ router.post("/getSeat", (req, res) => {
     });
 });
 
-//to use req.user, see passport.js
+//see passport.js to use req.user
 router.patch("/booking", async (req, res) => {
   //   const { error } = seatValidation(req.body);
   //   if (error) return res.status(400).send(error.details[0].message);

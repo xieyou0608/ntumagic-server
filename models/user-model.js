@@ -28,18 +28,31 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["audience", "admin"],
     default: "audience",
-    // required: true,
   },
   date: {
     type: Date,
     default: Date.now,
   },
+  friends: {
+    type: [{ friendName: String, friendPhone: String }],
+    default: [],
+  },
+  // tickets: {
+  //   type: [
+  //     {
+  //       seat: {
+  //         type: mongoose.Schema.Types.ObjectId,
+  //         ref: "Seat",
+  //       },
+  //     },
+  //   ],
+  // },
 });
 
-userSchema.method.isAudience = function () {
+userSchema.methods.isAudience = function () {
   return this.role == "audience";
 };
-userSchema.method.isAdmin = function () {
+userSchema.methods.isAdmin = function () {
   return this.role == "admin";
 };
 

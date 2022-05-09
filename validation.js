@@ -30,6 +30,21 @@ const seatValidation = (data) => {
   return schema.validate(data);
 };
 
+const friendsValidation = (data) => {
+  const schema = Joi.array()
+    .max(6)
+    .unique("friendName")
+    .items(
+      Joi.object({
+        friendName: Joi.string().required(),
+        friendPhone: Joi.string().required(),
+        _id: Joi.string(),
+      })
+    );
+  return schema.validate(data);
+};
+
 module.exports.registerValidation = registerValidation;
 module.exports.loginValidation = loginValidation;
 module.exports.seatValidation = seatValidation;
+module.exports.friendsValidation = friendsValidation;
