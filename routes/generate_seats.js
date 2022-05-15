@@ -28,12 +28,13 @@ function generate_seats() {
   //上半部
   for (i of top_rows) {
     for (j of left_cols) seats.push({ area: "C", row: i, col: j, sold: 0 }); //左上B區
-    seats.push({ area: "X", row: i, col: 0, sold: 0 });
+    seats.push({ area: "M", row: i, col: 0, sold: 0 });
     for (j of middle_cols) seats.push({ area: "B", row: i, col: j, sold: 0 }); //中上A區
-    seats.push({ area: "X", row: i, col: 0, sold: 0 });
+    seats.push({ area: "M", row: i, col: 0, sold: 0 });
     for (j of right_cols) seats.push({ area: "C", row: i, col: j, sold: 0 }); //右上B區
   }
 
+  //中間走道
   for (j of left_cols) seats.push({ area: "X", row: 0, col: j, sold: 0 }); //左上B區
   seats.push({ area: "X", row: 0, col: 0, sold: 0 });
   for (j of middle_cols) seats.push({ area: "X", row: 0, col: j, sold: 0 }); //中上A區
@@ -43,9 +44,9 @@ function generate_seats() {
   //下半部
   for (i of bottom_rows) {
     for (j of left_cols) seats.push({ area: "B", row: i, col: j, sold: 0 }); //左上B區
-    seats.push({ area: "X", row: i, col: 0, sold: 0 });
+    seats.push({ area: "M", row: i, col: 0, sold: 0 });
     for (j of middle_cols) seats.push({ area: "A", row: i, col: j, sold: 0 }); //中上A區
-    seats.push({ area: "X", row: i, col: 0, sold: 0 });
+    seats.push({ area: "M", row: i, col: 0, sold: 0 });
     for (j of right_cols) seats.push({ area: "B", row: i, col: j, sold: 0 }); //右上B區
   }
 
