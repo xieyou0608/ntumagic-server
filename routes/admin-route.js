@@ -90,5 +90,18 @@ router.patch("/friends/all", async (req, res) => {
     res.send(err);
   }
 });
+// 替所有帳號加上初始化票數(單次使用)
+router.patch("/usermodel/all", async (req, res) => {
+  try {
+    await User.updateMany(
+      {},
+      { ticketsNum: 0, bankAccount: "" },
+      { upsert: true }
+    );
+    res.send("update done.");
+  } catch (err) {
+    res.send(err);
+  }
+});
 
 module.exports = router;

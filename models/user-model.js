@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema({
     type: [{ friendName: String, friendPhone: String }],
     default: [],
   },
+  ticketsNum: {
+    type: Number,
+    default: 0,
+  },
+  bankAccount: {
+    type: String,
+    default: "",
+  },
   // tickets: {
   //   type: [
   //     {

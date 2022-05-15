@@ -17,18 +17,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/:row/:col", (req, res) => {
-  let { row, col } = req.params;
-  Seat.findOne({ row, col })
-    .populate("buyer", ["username"])
-    .then((seat) => {
-      res.send(seat);
-    })
-    .catch((e) => {
-      res.status(500).send("Cannot get seats information.");
-    });
-});
-
 router.post("/getSeat", (req, res) => {
   let { user_id } = req.body;
   Seat.find({ buyer: user_id })
@@ -42,9 +30,6 @@ router.post("/getSeat", (req, res) => {
 
 //see passport.js to use req.user
 router.patch("/booking", async (req, res) => {
-  //   const { error } = seatValidation(req.body);
-  //   if (error) return res.status(400).send(error.details[0].message);
-
   let { positions, user_id } = req.body;
 
   let seats = await Seat.find({ position: { $in: positions } });
@@ -53,7 +38,6 @@ router.patch("/booking", async (req, res) => {
   }
 
   for (seat of seats) {
-    //do not use for in loop
     if (seat.sold != 0) {
       return res.status(400).send({
         success: false,
@@ -62,7 +46,6 @@ router.patch("/booking", async (req, res) => {
     }
   }
 
-  //   if(seat.buyer.equals(req.user._id) || req.user.isAdmin())
   Seat.updateMany(
     { position: { $in: positions } },
     { sold: 1, buyer: user_id },
