@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const seatSchema = new mongoose.Schema({
   area: {
     type: String,
-    enum: ["A", "B", "C", "D", "X", "Sign"],
+    enum: ["A", "B", "C", "D", "X", "S"],
     required: true,
   },
   row: {
