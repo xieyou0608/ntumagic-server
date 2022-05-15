@@ -5,8 +5,11 @@ function generate_seats() {
   };
 
   // 座位排數
-  top_rows = range(1, 14, 1); // [1, 2, 3,  4,  5,  6, 7, 8, 9, 10, 11, 12, 13]
-  bottom_rows = range(14, 24, 1); // [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+  // top_rows = range(1, 14, 1); // [1, 2, 3,  4,  5,  6, 7, 8, 9, 10, 11, 12, 13]
+  // bottom_rows = range(14, 24, 1); // [14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+  top_rows = range(23, 13, -1); // [23~14]
+  bottom_rows = range(13, 0, -1); // [13~1]
 
   // 座位號碼
   left_X = [34];
@@ -25,11 +28,11 @@ function generate_seats() {
     for (j of right_cols) seats.push({ area: "B", row: i, col: j, sold: 0 }); //右上B區
   }
 
-  for (j of left_cols) seats.push({ area: "X", row: 13.5, col: j, sold: 0 }); //左上B區
-  seats.push({ area: "X", row: 13.5, col: 0, sold: 0 });
-  for (j of middle_cols) seats.push({ area: "X", row: 13.5, col: j, sold: 0 }); //中上A區
-  seats.push({ area: "X", row: 13.5, col: 0, sold: 0 });
-  for (j of right_cols) seats.push({ area: "X", row: 13.5, col: j, sold: 0 }); //右上B區
+  for (j of left_cols) seats.push({ area: "X", row: 0, col: j, sold: 0 }); //左上B區
+  seats.push({ area: "X", row: 0, col: 0, sold: 0 });
+  for (j of middle_cols) seats.push({ area: "X", row: 0, col: j, sold: 0 }); //中上A區
+  seats.push({ area: "X", row: 0, col: 0, sold: 0 });
+  for (j of right_cols) seats.push({ area: "X", row: 0, col: j, sold: 0 }); //右上B區
 
   //下半部
   for (i of bottom_rows) {
