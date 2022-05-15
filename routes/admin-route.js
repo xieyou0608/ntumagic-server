@@ -104,4 +104,32 @@ router.patch("/usermodel/all", async (req, res) => {
   }
 });
 
+// 修改座位的 area
+router.patch("/area", async (req, res) => {
+  let { positions, newArea, user_id } = req.body;
+
+  let seats = await Seat.find({ position: { $in: positions } });
+  if (!seats) {
+    return res.status(404).send("Cannot find seat.");
+  }
+
+  Seat.updateMany(
+    { position: { $in: positions } },
+    { area: newArea },
+    {
+      new: true,
+      runValidators: true,
+    }
+  )
+    .then(() => {
+      res.send("modify area success.");
+    })
+    .catch((e) => {
+      res.send({
+        success: false,
+        message: "Please try again",
+      });
+    });
+});
+
 module.exports = router;
