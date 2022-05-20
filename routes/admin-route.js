@@ -2,6 +2,7 @@ const router = require("express").Router();
 const User = require("../models").userModel;
 const Seat = require("../models").seatModel;
 const generate_seats = require("./generate_seats");
+const { startSession } = require("mongoose");
 
 router.use((req, res, next) => {
   console.log("A request is coming into admin router");
@@ -51,6 +52,29 @@ router.delete("/seats/all", async (req, res) => {
     res.send("All deleted");
   } catch (e) {
     res.send(e);
+  }
+});
+
+// 清空座位購買情形
+router.patch("/seats/clearPaid", async (req, res) => {
+  const session = await startSession();
+  try {
+    session.startTransaction();
+    await Seat.updateMany(
+      {},
+      { sold: false, paid: false, buyer: null },
+      { upsert: true }
+    );
+    await User.updateMany({}, { tickets: [] }, { upsert: true });
+
+    await session.commitTransaction();
+    session.endSession();
+    res.send("更新完畢");
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    console.log(err);
+    res.send(err);
   }
 });
 

@@ -19,18 +19,17 @@ const seatSchema = new mongoose.Schema({
     // required: true,
   },
   sold: {
-    type: Number, // 0:空位, 1:已劃位, 2:已付款
-    default: 0,
-    // required: true,
+    type: Boolean,
+    default: false,
   },
   buyer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    default: "",
+    default: null,
   },
   paid: {
-    type: Number,
-    default: 0,
+    type: Boolean,
+    default: false,
   },
 });
 
