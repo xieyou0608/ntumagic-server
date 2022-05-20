@@ -16,20 +16,23 @@ router.get("/", async (req, res) => {
   res.send(user);
 });
 
-// // add a friend
-// router.post("/", async (req, res) => {
-//   try {
-//     console.log(req.body);
-//     let user = await User.findOne({ _id: req.user._id });
-//     if (!user) return res.status(404).send("Cannot find user.");
-//     console.log(user.friends);
-//     user.friends.push(req.body);
-//     await user.save();
-//     res.send("add a friend.");
-//   } catch (err) {
-//     res.send(err);
-//   }
-// });
+// modify bankAccount
+router.patch("/bankAccount", async (req, res) => {
+  newBank = req.body.bankAccount;
+  console.log(newBank);
+
+  try {
+    let doc = await User.findOneAndUpdate(
+      { _id: req.user._id },
+      { bankAccount: newBank },
+      { new: true, upsert: true }
+    );
+    // res.send("Bank account updated.");
+    res.send(doc);
+  } catch (err) {
+    res.send(err);
+  }
+});
 
 // modify friends
 router.patch("/friends", async (req, res) => {
@@ -40,15 +43,14 @@ router.patch("/friends", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
 
   try {
-    let doc = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { _id: req.user._id },
       { friends: newFriends },
       {
         new: true,
       }
     );
-    // console.log(doc);
-    res.send("updated");
+    res.send("Friends updated.");
   } catch (err) {
     res.send(err);
   }

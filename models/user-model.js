@@ -37,24 +37,26 @@ const userSchema = new mongoose.Schema({
     type: [{ friendName: String, friendPhone: String }],
     default: [],
   },
-  ticketsNum: {
-    type: Number,
-    default: 0,
-  },
+  // ticketsNum: {
+  //   type: Number,
+  //   default: 0,
+  // },
   bankAccount: {
     type: String,
     default: "",
   },
-  // tickets: {
-  //   type: [
-  //     {
-  //       seat: {
-  //         type: mongoose.Schema.Types.ObjectId,
-  //         ref: "Seat",
-  //       },
-  //     },
-  //   ],
-  // },
+  tickets: {
+    type: [
+      {
+        _id: mongoose.Schema.Types.ObjectId,
+        area: String,
+        row: Number,
+        col: Number,
+        paid: Number,
+      },
+    ],
+    default: [],
+  },
 });
 
 userSchema.methods.isAudience = function () {

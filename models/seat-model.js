@@ -26,6 +26,11 @@ const seatSchema = new mongoose.Schema({
   buyer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    default: "",
+  },
+  paid: {
+    type: Number,
+    default: 0,
   },
 });
 
