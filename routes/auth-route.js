@@ -26,11 +26,19 @@ router.post("/register", async (req, res) => {
   if (emailExist)
     return res.status(400).send("Email has already been registered");
 
+  let isStudent;
+  if (req.body.email.search("@ntu.edu.tw") !== -1) {
+    isStudent = true;
+  } else {
+    isStudent = false;
+  }
+
   const newUser = new User({
     email: req.body.email,
     username: req.body.username,
     password: req.body.password, //password will be encrypted before save, see user-model.js
     phone: req.body.phone,
+    isStudent: isStudent,
   });
   try {
     const saveUser = await newUser.save();

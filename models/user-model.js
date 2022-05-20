@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
     enum: ["audience", "admin"],
     default: "audience",
   },
+  isStudent: {
+    type: Boolean,
+  },
   date: {
     type: Date,
     default: Date.now,
@@ -37,10 +40,6 @@ const userSchema = new mongoose.Schema({
     type: [{ friendName: String, friendPhone: String }],
     default: [],
   },
-  // ticketsNum: {
-  //   type: Number,
-  //   default: 0,
-  // },
   bankAccount: {
     type: String,
     default: "",
