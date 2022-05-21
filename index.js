@@ -48,6 +48,10 @@ app.use(
   adminRoute
 );
 
-app.listen(process.env.PORT, () => {
+app.get("/", (req, res) => {
+  res.send("This is ntumagic API.");
+});
+
+app.listen(process.env.PORT || 8080, () => {
   console.log("Server is running.");
 });
