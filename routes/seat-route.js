@@ -10,7 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get("/", async (req, res) => {
-  seats = await Seat.find({});
+  seats = await Seat.find({}).sort({ _id: 1 });
   if (seats) {
     // console.log(seats);
     res.status(200).send(seats);
