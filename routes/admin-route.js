@@ -243,4 +243,20 @@ router.patch("/area", async (req, res) => {
     });
 });
 
+//傳入user id，將其所有座位標記為已付款
+router.patch("/seat/paid", async (req, res) => {
+  let { user_id } = req.body;
+  try {
+    const user_doc = await User.findOne({ _id: user_id });
+    user_doc.tickets = user_doc.tickets.map((seat) => {
+      seat.paid = true;
+      return seat;
+    });
+    await user_doc.save();
+    res.send(user_doc);
+  } catch (e) {
+    res.send(e);
+  }
+});
+
 module.exports = router;
