@@ -293,7 +293,7 @@ router.post("/seat/email", async (req, res) => {
       from: process.env.GMAIL_ACCOUNT,
       to: user_doc.email,
       cc: process.env.GMAIL_ACCOUNT,
-      subject: "【台大魔夜】付款成功通知",
+      subject: "【第27屆台大魔幻之夜】付款成功通知信",
       html: `<h3>${user_doc.username} 您好：</h3>
     <p>恭喜您！您已成功付款！</p>
     <p>您的座位：</p>
