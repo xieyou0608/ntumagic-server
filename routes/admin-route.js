@@ -3,6 +3,7 @@ const User = require("../models").userModel;
 const Seat = require("../models").seatModel;
 const generate_seats = require("./generate_seats");
 const { startSession } = require("mongoose");
+const nodemailer = require("nodemailer");
 
 router.use((req, res, next) => {
   console.log("A request is coming into admin router");
@@ -33,6 +34,7 @@ router.get("/users", async (req, res) => {
   }
 });
 
+// 刪除用戶的所有座位，並回傳新的 doc
 router.patch("/clearSeatById", async (req, res) => {
   let { user_id } = req.body;
   const session = await startSession();
@@ -243,7 +245,7 @@ router.patch("/area", async (req, res) => {
     });
 });
 
-//傳入user id，將其所有座位標記為已付款
+//傳入user id，將其所有座位標記為已付款，並回傳修改過後的 doc
 router.patch("/seat/paid", async (req, res) => {
   let { user_id } = req.body;
   try {
@@ -257,6 +259,82 @@ router.patch("/seat/paid", async (req, res) => {
   } catch (e) {
     res.send(e);
   }
+});
+
+router.patch("/seat/email", async (req, res) => {
+  let { user_id } = req.body;
+  try {
+    let user_doc = await User.findOneAndUpdate(
+      { _id: user_id },
+      { emailSent: true },
+      { new: true, upsert: true }
+    );
+    res.send(user_doc);
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+router.post("/seat/email", async (req, res) => {
+  let { user_id } = req.body;
+  try {
+    const user_doc = await User.findOne({ _id: user_id });
+
+    console.log(process.env.GMAIL_ACCOUNT);
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.GMAIL_ACCOUNT,
+        pass: process.env.GMAIL_PASSWORD,
+      },
+    });
+
+    const options = {
+      from: process.env.GMAIL_ACCOUNT,
+      to: user_doc.email,
+      cc: process.env.GMAIL_ACCOUNT,
+      subject: "【台大魔夜】付款成功通知",
+      html: `<h3>${user_doc.username} 您好：</h3>
+    <p>恭喜您！您已成功付款！</p>
+    <p>您的座位：</p>
+    ${user_doc.tickets
+      .map((t) => {
+        return `<h4>
+        ${t.area} 區 ${t.row} 排 ${t.col} 號
+        </h4>`;
+      })
+      .join("")}
+      <p>感謝您支持第27屆台大魔幻之夜《ALL IN MAGIC》</p>
+      <p>當日請出示此封信件領取實體門票</p>
+      <p>以下附上魔夜晚會資訊</p>
+      <p>預祝您有個愉快的夜晚</p>
+      <p>跟著我們一起ALL IN吧！</p>
+      <p>================================================</p>
+      <h3>【🎩第27屆台大魔幻之夜🎩】</h3>
+      <p>魔夜時間：2022/6/14（二）18:00進場 18:30開始</p>
+      <p>魔夜地點：民生社區活動中心集會堂</p>
+      <p>（近捷運南京三民站1號出口）</p>
+      <p>第27屆台大魔幻之夜期待您的蒞臨！</p>`,
+    };
+
+    transporter.sendMail(options, async function (err, info) {
+      if (err) {
+        console.log(err);
+        return res.send(err);
+      } else {
+        console.log("email發送成功: " + info.response);
+        user_doc.emailSent = true;
+        await user_doc.save();
+        res.send(user_doc);
+      }
+    });
+  } catch (e) {
+    res.send(e);
+  }
+});
+
+router.post("/test", (req, res) => {
+  res.send("admin route is working");
 });
 
 module.exports = router;

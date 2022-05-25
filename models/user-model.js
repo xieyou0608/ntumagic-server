@@ -51,11 +51,15 @@ const userSchema = new mongoose.Schema({
         area: String,
         row: Number,
         col: Number,
-        paid: Number,
+        paid: Boolean,
         bookDate: Date,
       },
     ],
     default: [],
+  },
+  emailSent: {
+    type: Boolean,
+    default: false,
   },
 });
 

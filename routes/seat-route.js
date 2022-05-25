@@ -75,6 +75,9 @@ router.patch("/booking", async (req, res) => {
             };
           }),
         },
+        $set: {
+          emailSent: false,
+        },
       },
       { new: true, upsert: true }
     );
