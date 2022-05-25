@@ -52,6 +52,7 @@ const userSchema = new mongoose.Schema({
         row: Number,
         col: Number,
         paid: Number,
+        bookDate: Date,
       },
     ],
     default: [],

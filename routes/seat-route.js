@@ -71,6 +71,7 @@ router.patch("/booking", async (req, res) => {
               row: x.row,
               col: x.col,
               paid: 0,
+              bookDate: new Date(),
             };
           }),
         },
