@@ -34,12 +34,12 @@ router.get("/users", async (req, res) => {
 });
 
 router.patch("/clearSeatById", async (req, res) => {
-  let { _user_id } = req.body;
+  let { user_id } = req.body;
   const session = await startSession();
   try {
     session.startTransaction();
     await Seat.updateMany(
-      { buyer: _user_id },
+      { buyer: user_id },
       { sold: 0, buyer: null },
       {
         new: true,
@@ -47,7 +47,7 @@ router.patch("/clearSeatById", async (req, res) => {
       }
     );
     let user_doc = await User.findOneAndUpdate(
-      { _id: _user_id },
+      { _id: user_id },
       { tickets: [] },
       { new: true, upsert: true }
     );

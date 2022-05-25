@@ -16,6 +16,14 @@ router.get("/", async (req, res) => {
   res.send(user);
 });
 
+router.get("/reload", async (req, res) => {
+  let user_doc = await User.findOne({ _id: req.user._id });
+  if (!user_doc) {
+    return res.status(404).send("Cannot find user.");
+  }
+  res.send(user_doc);
+});
+
 // modify bankAccount
 router.patch("/bankAccount", async (req, res) => {
   newBank = req.body.bankAccount;
