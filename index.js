@@ -7,6 +7,7 @@ const authRoute = require("./routes").auth_route;
 const seatRoute = require("./routes").seat_route;
 const adminRoute = require("./routes").admin_route;
 const audienceRoute = require("./routes").audience_route;
+const Seat = require("./models").seatModel;
 const passport = require("passport");
 require("./config/passport")(passport);
 const cors = require("cors");
@@ -50,6 +51,16 @@ app.use(
 
 app.get("/", (req, res) => {
   res.send("This is ntumagic API.");
+});
+
+// This route is same as /api/seats but not be protected
+app.get("/api/preview", async (req, res) => {
+  let seats = await Seat.find({}).sort({ _id: 1 });
+  if (seats) {
+    res.status(200).send(seats);
+  } else {
+    res.status(500).send("Please try again");
+  }
 });
 
 app.listen(process.env.PORT || 8080, () => {
