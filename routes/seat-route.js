@@ -10,7 +10,7 @@ router.use((req, res, next) => {
 });
 
 router.get("/", async (req, res) => {
-  seats = await Seat.find({}).sort({ _id: 1 });
+  const seats = await Seat.find({}).sort({ _id: 1 });
   if (seats) {
     // console.log(seats);
     res.status(200).send(seats);
@@ -40,7 +40,7 @@ router.patch("/booking", async (req, res) => {
     return res.status(404).send("Cannot find seat.");
   }
 
-  for (seat of seats) {
+  for (const seat of seats) {
     if (seat.sold != 0) {
       return res.status(400).send({
         success: false,

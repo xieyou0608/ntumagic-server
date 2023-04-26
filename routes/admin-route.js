@@ -15,7 +15,7 @@ router.use((req, res, next) => {
 });
 
 router.get("/", async (req, res) => {
-  seats = await Seat.find({});
+  const seats = await Seat.find({});
   if (seats) {
     // console.log(seats);
     res.status(200).send(seats);
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 
 // 拿到所有user資料
 router.get("/users", async (req, res) => {
-  users = await User.find({});
+  const users = await User.find({});
   if (users) {
     res.status(200).send(users);
   } else {
@@ -69,7 +69,7 @@ router.patch("/user", async (req, res) => {
   let { _user_id } = req.body;
   console.log("here2");
   try {
-    seats = await Seat.find({ buyer: _user_id });
+    const seats = await Seat.find({ buyer: _user_id });
     res.send(seats);
   } catch (e) {
     res.send(e);
