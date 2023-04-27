@@ -196,7 +196,7 @@ router.post("/seat/email", async (req, res) => {
       from: process.env.GMAIL_ACCOUNT,
       to: user_doc.email,
       cc: process.env.GMAIL_ACCOUNT,
-      subject: "【第27屆台大魔幻之夜】付款成功通知信",
+      subject: "【第28屆台大魔幻之夜】付款成功通知信",
       html: `<h3>${user_doc.username} 您好：</h3>
     <p>恭喜您！您已成功付款！</p>
     <p>您的座位：</p>
@@ -207,14 +207,14 @@ router.post("/seat/email", async (req, res) => {
         </h4>`;
       })
       .join("")}
-      <p>感謝您支持第27屆台大魔幻之夜《ALL IN MAGIC》</p>
+      <p>感謝您支持第28屆台大魔幻之夜《Unveiling: Anew Dawn》</p>
       <p>當日請出示此封信件領取實體門票</p>
       <p>以下附上魔夜晚會資訊</p>
       <p>預祝您有個愉快的夜晚</p>
       <p>跟著我們一起ALL IN吧！</p>
       <p>================================================</p>
-      <h3>【🎩第27屆台大魔幻之夜🎩】</h3>
-      <p>魔夜時間：2022/6/14（二）18:00進場 18:30開始</p>
+      <h3>【🎩第28屆台大魔幻之夜🎩】</h3>
+      <p>魔夜時間：2023/5/25（四）18:00進場 18:30開始</p>
       <p>魔夜地點：民生社區活動中心集會堂</p>
       <p>（近捷運南京三民站1號出口）</p>
       <p>第27屆台大魔幻之夜期待您的蒞臨！</p>`,
