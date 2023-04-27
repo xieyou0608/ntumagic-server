@@ -127,7 +127,7 @@ router.patch("/booking", async (req, res) => {
       <p>魔夜時間：2023/5/25（四）18:00進場 18:30開始</p>
       <p>魔夜地點：民生社區活動中心集會堂</p>
       <p>（近捷運南京三民站1號出口）</p>
-      <p>第27屆台大魔幻之夜期待您的蒞臨！</p>`,
+      <p>第28屆台大魔幻之夜期待您的蒞臨！</p>`,
       };
 
       transporter.sendMail(options, async function (err, info) {
