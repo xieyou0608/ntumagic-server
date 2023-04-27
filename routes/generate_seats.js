@@ -54,6 +54,8 @@ function generate_seats() {
     s.position = { row: s.row, col: s.col };
   }
 
+  seats.reverse();
+
   return seats;
 }
 

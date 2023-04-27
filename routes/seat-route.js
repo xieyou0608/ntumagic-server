@@ -33,7 +33,7 @@ router.post("/getSeat", (req, res) => {
 //劃位: 檢查位子是否被劃走後，以Atomic方式更新座位及用戶資訊，然後response新的用戶資訊
 //see passport.js to use req.user
 router.patch("/booking", async (req, res) => {
-  let { positions, user_id } = req.body;
+  let { positions, email, username, bankAccount } = req.body;
 
   let seats = await Seat.find({ position: { $in: positions } });
   if (!seats) {
@@ -48,20 +48,26 @@ router.patch("/booking", async (req, res) => {
       });
     }
   }
+  let user = await User.findOne({ email: email });
+  if (user) {
+    if (user.tickets.length + positions.length > 6) {
+      return res.status(400).send("劃位超過上限");
+    }
+  }
 
   const session = await startSession();
   try {
     session.startTransaction();
     await Seat.updateMany(
       { position: { $in: positions } },
-      { sold: 1, buyer: user_id },
+      { sold: 1, buyer: email },
       {
         new: true,
         runValidators: true,
       }
     );
     let user_doc = await User.findOneAndUpdate(
-      { _id: user_id },
+      { email: email },
       {
         $push: {
           tickets: seats.map((x) => {
@@ -76,6 +82,8 @@ router.patch("/booking", async (req, res) => {
           }),
         },
         $set: {
+          username,
+          bankAccount,
           emailSent: false,
         },
       },
@@ -91,25 +99,6 @@ router.patch("/booking", async (req, res) => {
     console.log(err);
     res.send("Error, please try again");
   }
-  // 以上為使用ACID原則更新座位及user資訊
-  // 以下為只更新座位
-  // Seat.updateMany(
-  //   { position: { $in: positions } },
-  //   { sold: 1, buyer: user_id },
-  //   {
-  //     new: true,
-  //     runValidators: true,
-  //   }
-  // )
-  //   .then(() => {
-  //     res.send("Booking success.");
-  //   })
-  //   .catch((e) => {
-  //     res.send({
-  //       success: false,
-  //       message: "Please try again",
-  //     });
-  //   });
 });
 
 module.exports = router;

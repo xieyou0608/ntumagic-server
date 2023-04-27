@@ -16,13 +16,13 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    require: true,
+    require: false,
     minlength: 6,
     maxlength: 1024,
   },
   phone: {
     type: String,
-    require: true,
+    require: false,
   },
   role: {
     type: String,
@@ -35,10 +35,6 @@ const userSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now,
-  },
-  friends: {
-    type: [{ friendName: String, friendPhone: String }],
-    default: [],
   },
   bankAccount: {
     type: String,
@@ -69,17 +65,6 @@ userSchema.methods.isAudience = function () {
 userSchema.methods.isAdmin = function () {
   return this.role == "admin";
 };
-
-//mongoose schema middleware
-userSchema.pre("save", async function (next) {
-  if (this.isModified("password") || this.isNew) {
-    const hash = await bcrypt.hash(this.password, 10);
-    this.password = hash;
-    next();
-  } else {
-    return next();
-  }
-});
 
 userSchema.methods.comparePassword = function (password, callback) {
   bcrypt.compare(password, this.password, (err, result) => {

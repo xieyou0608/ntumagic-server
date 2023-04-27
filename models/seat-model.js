@@ -23,7 +23,7 @@ const seatSchema = new mongoose.Schema({
     default: false,
   },
   buyer: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "User",
     default: null,
   },

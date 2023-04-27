@@ -29,13 +29,9 @@ app.use(cors());
 
 // routes which are not protected
 app.use("/api/user", authRoute);
+app.use("/api/seats", seatRoute);
 
 // routes which are protected
-app.use(
-  "/api/seats",
-  passport.authenticate("jwt", { session: false }),
-  seatRoute
-);
 
 app.use(
   "/api/audience",
