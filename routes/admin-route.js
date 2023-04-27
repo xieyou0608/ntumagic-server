@@ -56,7 +56,7 @@ router.patch("/clearSeatById", async (req, res) => {
     );
     let user_doc = await User.findOneAndUpdate(
       { _id: user_id },
-      { tickets: [] },
+      { tickets: [], emailSent: false },
       { new: true, upsert: true }
     );
 
