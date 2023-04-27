@@ -42,16 +42,15 @@ router.patch("/booking", async (req, res) => {
 
   for (const seat of seats) {
     if (seat.sold != 0) {
-      return res.status(400).send({
-        success: false,
-        message: "Seat already been sold.",
-      });
+      return res.status(400).send("位置已被其他人選擇，請重新劃位");
     }
   }
   let user = await User.findOne({ email: email });
   if (user) {
-    if (user.tickets.length + positions.length > 6) {
-      return res.status(400).send("劃位超過上限");
+    const numBooked = user.tickets.length;
+    if (numBooked + positions.length > 6) {
+      console.log("上限");
+      return res.status(400).send(`劃位上限為6張，您已劃${numBooked}張`);
     }
   }
 
