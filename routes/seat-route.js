@@ -103,7 +103,7 @@ router.patch("/booking", async (req, res) => {
 
     // 寄出驗證信
     if (needVerify) {
-      const verifyLink = `https://ntumagic.club/verify?email=${email}&verifyToken=${emailHash}`;
+      const verifyLink = `https://www.ntumagic.club/verify?email=${email}&verifyToken=${emailHash}`;
       // const verifyLink = `http://localhost:3000/verify?email=${email}&verifyToken=${emailHash}`;
 
       const transporter = nodemailer.createTransport({
