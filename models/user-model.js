@@ -57,6 +57,13 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  verifyToken: {
+    type: String,
+  },
 });
 
 userSchema.methods.isAudience = function () {

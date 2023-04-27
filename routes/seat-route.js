@@ -3,6 +3,8 @@ const Seat = require("../models").seatModel;
 const User = require("../models").userModel;
 const seatValidation = require("../validation").seatValidation;
 const { startSession } = require("mongoose");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 router.use((req, res, next) => {
   console.log("A request is coming into seat router");
@@ -46,7 +48,9 @@ router.patch("/booking", async (req, res) => {
     }
   }
   let user = await User.findOne({ email: email });
+  let needVerify = true;
   if (user) {
+    needVerify = false;
     const numBooked = user.tickets.length;
     if (numBooked + positions.length > 6) {
       console.log("上限");
@@ -65,6 +69,12 @@ router.patch("/booking", async (req, res) => {
         runValidators: true,
       }
     );
+
+    const emailHash = crypto
+      .createHash("sha256")
+      .update(email + process.env.EMAIL_HASH)
+      .digest("hex");
+
     let user_doc = await User.findOneAndUpdate(
       { email: email },
       {
@@ -84,10 +94,49 @@ router.patch("/booking", async (req, res) => {
           username,
           bankAccount,
           emailSent: false,
+          verified: !needVerify,
+          verifyToken: emailHash,
         },
       },
       { new: true, upsert: true }
     );
+
+    // 寄出驗證信
+    if (needVerify) {
+      const verifyLink = `https://ntumagic.club/verify?email=${email}&verifyToken=${emailHash}`;
+      // const verifyLink = `http://localhost:3000/verify?email=${email}&verifyToken=${emailHash}`;
+
+      const transporter = nodemailer.createTransport({
+        service: "Gmail",
+        auth: {
+          user: process.env.GMAIL_ACCOUNT,
+          pass: process.env.GMAIL_PASSWORD,
+        },
+      });
+
+      const options = {
+        from: process.env.GMAIL_ACCOUNT,
+        to: user_doc.email,
+        cc: process.env.GMAIL_ACCOUNT,
+        subject: "【第28屆台大魔幻之夜】信箱驗證信",
+        html: `<h3>${username} 您好：</h3>
+      <p>感謝您支持第28屆台大魔幻之夜《Unveiling: Anew Dawn》</p>
+      <p>請點擊<a href=${verifyLink}>驗證連結</a>來進行信箱驗證</p>
+      <p>================================================</p>
+      <h3>【🎩第28屆台大魔幻之夜🎩】</h3>
+      <p>魔夜時間：2023/5/25（四）18:00進場 18:30開始</p>
+      <p>魔夜地點：民生社區活動中心集會堂</p>
+      <p>（近捷運南京三民站1號出口）</p>
+      <p>第27屆台大魔幻之夜期待您的蒞臨！</p>`,
+      };
+
+      transporter.sendMail(options, async function (err, info) {
+        if (err) {
+          console.log(err);
+          throw new Error(err);
+        }
+      });
+    }
 
     await session.commitTransaction();
     session.endSession();

@@ -79,4 +79,24 @@ router.post("/login", (req, res) => {
   });
 });
 
+router.patch("/verify", async (req, res) => {
+  console.log("A request is coming into verify");
+  const { verifyToken } = req.body;
+  console.log(verifyToken);
+  if (!verifyToken) {
+    return res.status(400).send("驗證失敗!");
+  }
+  try {
+    await User.findOneAndUpdate(
+      {
+        verifyToken,
+      },
+      { verified: true }
+    );
+    res.send("成功驗證!");
+  } catch (e) {
+    res.status(400).send("驗證失敗!");
+  }
+});
+
 module.exports = router;
