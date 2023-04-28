@@ -121,7 +121,7 @@ router.patch("/booking", async (req, res) => {
       <p>首次劃位請點擊<a href=${verifyLink}>驗證連結</a>來進行信箱驗證</p>
       <p>================================================</p>
       <p>您此次所劃的座位：</p>
-      ${tickets
+      ${seats
         .map((t) => {
           return `<h4>
           ${t.area} 區 ${t.row} 排 ${t.col} 號
