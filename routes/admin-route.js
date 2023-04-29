@@ -71,6 +71,38 @@ router.patch("/clearSeatById", async (req, res) => {
   }
 });
 
+// 刪除用戶的所有座位，並回傳新的 doc
+router.patch("/removeSingleSeat", async (req, res) => {
+  let { user_id, row, col } = req.body;
+  const session = await startSession();
+  try {
+    session.startTransaction();
+    await Seat.updateOne(
+      { row, col },
+      { sold: 0, buyer: null },
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+    let userDoc = await User.findById({ _id: user_id });
+    userDoc.tickets = userDoc.tickets.filter(
+      (t) => !(t.row === row && t.col === col)
+    );
+    userDoc.emailSent = false;
+    userDoc.save();
+
+    await session.commitTransaction();
+    session.endSession();
+    res.send(userDoc);
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    console.log(err);
+    res.send("Error, please try again");
+  }
+});
+
 // router.patch("/user", async (req, res) => {
 //   let { _user_id } = req.body;
 //   console.log("here2");
