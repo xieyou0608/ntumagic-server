@@ -111,6 +111,15 @@ router.patch("/booking", async (req, res) => {
       },
     });
 
+    const price = {
+      A: 500,
+      B: 400,
+      C: 300,
+    };
+    const totalPayment = seats.reduce((acc, cur) => {
+      return acc + price[cur.area];
+    }, 0);
+
     const options = {
       from: process.env.GMAIL_ACCOUNT,
       to: user_doc.email,
@@ -128,6 +137,7 @@ router.patch("/booking", async (req, res) => {
           </h4>`;
         })
         .join("")}
+      <p>共 ${totalPayment} 元</p>
       <p>================================================</p>
       <h3>【🎩第28屆台大魔幻之夜🎩】</h3>
       <p>魔夜時間：2023/5/25（四）18:00進場 18:30開始</p>
@@ -140,6 +150,8 @@ router.patch("/booking", async (req, res) => {
       if (err) {
         console.log(err);
         throw new Error(err);
+      } else {
+        console.log("劃位 email 發送成功: " + info.response);
       }
     });
 
