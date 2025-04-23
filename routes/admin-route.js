@@ -144,7 +144,7 @@ router.delete("/user", async (req, res) => {
   }
 });
 
-// // 插入所有座位
+// 插入所有座位
 // router.post("/seats/all", (req, res) => {
 //   const seats = generate_seats();
 //   Seat.insertMany(seats)
@@ -156,7 +156,7 @@ router.delete("/user", async (req, res) => {
 //     });
 // });
 
-// // 刪除所有座位
+// 刪除所有座位
 // router.delete("/seats/all", async (req, res) => {
 //   try {
 //     await Seat.deleteMany({});
@@ -228,26 +228,26 @@ router.post("/seat/email", async (req, res) => {
       from: process.env.GMAIL_ACCOUNT,
       to: user_doc.email,
       cc: process.env.GMAIL_ACCOUNT,
-      subject: "【第28屆台大魔幻之夜】付款成功通知信",
+      subject: "【第29屆台大魔幻之夜】付款成功通知信",
       html: `<h3>${user_doc.username} 您好：</h3>
     <p>恭喜您！您已成功付款！</p>
     <p>您的座位：</p>
     ${user_doc.tickets
-      .map((t) => {
-        return `<h4>
+          .map((t) => {
+            return `<h4>
         ${t.area} 區 ${t.row} 排 ${t.col} 號
         </h4>`;
-      })
-      .join("")}
-      <p>感謝您支持第28屆台大魔幻之夜《Unveiling: Anew Dawn》</p>
+          })
+          .join("")}
+      <p>感謝您支持第29屆台大魔幻之夜《Unveiling: Anew Dawn》</p>
       <p>當日請出示此封信件領取實體門票</p>
       <p>預祝您有個愉快的夜晚！</p>
       <p>================================================</p>
-      <h3>【🎩第28屆台大魔幻之夜🎩】</h3>
-      <p>魔夜時間：2023/5/25（四）18:00進場 18:30開始</p>
-      <p>魔夜地點：民生社區活動中心集會堂</p>
-      <p>（近捷運南京三民站1號出口）</p>
-      <p>第28屆台大魔幻之夜期待您的蒞臨！</p>`,
+      <h3>【🎩第29屆台大魔幻之夜🎩】</h3>
+      <p>魔夜時間：2025/6/12（四）18:00 進場 18:30 開始</p>
+      <p>魔夜地點：國立臺灣藝術教育館 南海劇場</p>
+      <p>（近捷運小南門站3號出口）</p>
+      <p>第29屆台大魔幻之夜期待您的蒞臨！</p>`,
     };
 
     transporter.sendMail(options, async function (err, info) {
@@ -255,7 +255,7 @@ router.post("/seat/email", async (req, res) => {
         console.log(err);
         return res.send(err);
       } else {
-        console.log("email發送成功: " + info.response);
+        console.log("email發送成功：" + info.response);
         user_doc.emailSent = true;
         await user_doc.save();
         res.send(user_doc);

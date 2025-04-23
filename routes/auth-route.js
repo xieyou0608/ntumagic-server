@@ -84,7 +84,7 @@ router.patch("/verify", async (req, res) => {
   const { verifyToken } = req.body;
   console.log(verifyToken);
   if (!verifyToken) {
-    return res.status(400).send("驗證失敗!");
+    return res.status(400).send("驗證失敗！");
   }
   try {
     await User.findOneAndUpdate(
@@ -93,9 +93,9 @@ router.patch("/verify", async (req, res) => {
       },
       { verified: true }
     );
-    res.send("成功驗證!");
+    res.send("驗證成功！");
   } catch (e) {
-    res.status(400).send("驗證失敗!");
+    res.status(400).send("驗證失敗！");
   }
 });
 
