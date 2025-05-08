@@ -112,9 +112,9 @@ router.patch("/booking", async (req, res) => {
     });
 
     const price = {
-      A: 500,
-      B: 400,
-      C: 300,
+      A: 600,
+      B: 500,
+      C: 400,
     };
     const totalPayment = seats.reduce((acc, cur) => {
       return acc + price[cur.area];

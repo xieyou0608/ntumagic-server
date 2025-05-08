@@ -133,16 +133,16 @@ router.patch("/removeSingleSeat", async (req, res) => {
 // });
 
 // 刪除用戶
-router.delete("/user", async (req, res) => {
-  let { _user_id } = req.body;
-  console.log("here");
-  try {
-    await User.deleteOne({ _id: _user_id });
-    res.send("刪除完畢" + _user_id);
-  } catch (e) {
-    res.send(e);
-  }
-});
+// router.delete("/user", async (req, res) => {
+//   let { _user_id } = req.body;
+//   console.log("here");
+//   try {
+//     await User.deleteOne({ _id: _user_id });
+//     res.send("刪除完畢" + _user_id);
+//   } catch (e) {
+//     res.send(e);
+//   }
+// });
 
 // 插入所有座位
 // router.post("/seats/all", (req, res) => {
@@ -157,14 +157,14 @@ router.delete("/user", async (req, res) => {
 // });
 
 // 刪除所有座位
-// router.delete("/seats/all", async (req, res) => {
-//   try {
-//     await Seat.deleteMany({});
-//     res.send("All deleted");
-//   } catch (e) {
-//     res.send(e);
-//   }
-// });
+router.delete("/seats/all", async (req, res) => {
+  try {
+    await Seat.deleteMany({});
+    res.send("All deleted");
+  } catch (e) {
+    res.send(e);
+  }
+});
 
 // 修改座位的 area
 router.patch("/area", async (req, res) => {
