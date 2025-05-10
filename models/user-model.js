@@ -4,25 +4,25 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   username: {
     type: String,
-    require: true,
+    required: true,
     minlength: 2,
     maxlength: 50,
   },
   email: {
     type: String,
-    require: true,
+    required: true,
     minlength: 6,
     maxlength: 100,
   },
   password: {
     type: String,
-    require: false,
+    required: false,
     minlength: 6,
     maxlength: 1024,
   },
   phone: {
     type: String,
-    require: false,
+    required: false,
   },
   role: {
     type: String,
@@ -73,6 +73,19 @@ userSchema.methods.isAdmin = function () {
   return this.role == "admin";
 };
 
+
+// hash
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  try {
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
+//validate password
 userSchema.methods.comparePassword = function (password, callback) {
   bcrypt.compare(password, this.password, (err, result) => {
     if (err) {
@@ -81,5 +94,6 @@ userSchema.methods.comparePassword = function (password, callback) {
     callback(null, result);
   });
 };
+
 
 module.exports = mongoose.model("User", userSchema);
