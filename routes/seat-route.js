@@ -53,8 +53,8 @@ router.patch("/booking", async (req, res) => {
     needVerify = false;
     const numBooked = user.tickets.length;
     if (numBooked + positions.length > 6) {
-      console.log("上限");
-      return res.status(400).send(`劃位上限為6張，您已劃${numBooked}張`);
+      console.log("使用者劃位達上限");
+      return res.status(400).send(`劃位上限為 6 張，您已劃 ${numBooked} 張`);
     }
   }
 
@@ -124,9 +124,9 @@ router.patch("/booking", async (req, res) => {
       from: process.env.GMAIL_ACCOUNT,
       to: user_doc.email,
       cc: process.env.GMAIL_ACCOUNT,
-      subject: "【第29屆台大魔幻之夜】劃位通知",
+      subject: "【第 29 屆台大魔幻之夜】劃位通知",
       html: `<h3>${username} 您好：</h3>
-      <p>感謝您支持第29屆台大魔幻之夜《Unveiling: Anew Dawn》</p>
+      <p>感謝您支持第 29 屆台大魔幻之夜《Blooming Mirage》</p>
       <p>首次劃位請點擊<a href=${verifyLink}>驗證連結</a>來進行信箱驗證</p>
       <p>================================================</p>
       <p>您此次所劃的座位：</p>
@@ -144,11 +144,11 @@ router.patch("/booking", async (req, res) => {
       <p>帳號：00312180252039</p>
       <p>戶名：黃宗軒</p>
       <p>================================================</p>
-      <h3>【🎩第29屆台大魔幻之夜🎩】</h3>
+      <h3>【🎩第 29 屆台大魔幻之夜🎩】</h3>
       <p>魔夜時間：2025/6/12（四）18:00進場 18:30開始</p>
       <p>魔夜地點：國立臺灣藝術教育館 南海劇場</p>
-      <p>（近捷運小南門站3號出口）</p>
-      <p>第29屆台大魔幻之夜期待您的蒞臨！</p>`,
+      <p>（近捷運小南門站 3 號出口）</p>
+      <p>第 29 屆台大魔幻之夜期待您的蒞臨！</p>`,
     };
 
     transporter.sendMail(options, async function (err, info) {
