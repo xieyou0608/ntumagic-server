@@ -351,9 +351,11 @@ function generate_seats() {
   for (let j = 14; j <= 30; j += 2) seats.push({ area: "X", row: 0, col: j, sold: 0 });
 
 
-  for (s of seats) {
-    s.position = { row: s.row, col: s.col, area: s.area };
-  }
+
+  for (let i = 0; i < 44 * 17; i++) seats[i].floor = 1;
+  for (let i = 0; i < 44 * 17; i++) seats[i].position = { row: seats[i].row, col: seats[i].col, floor: seats[i].floor };
+  for (let i = 44 * 17; i < seats.length; i++) seats[i].floor = 2;
+  for (let i = 44 * 17; i < seats.length; i++) seats[i].position = { row: seats[i].row, col: seats[i].col, floor: seats[i].floor };
   return seats;
 }
 

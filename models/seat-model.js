@@ -14,9 +14,13 @@ const seatSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  floor: {
+    type: Number,
+    required: true,
+  },
   position: {
     type: Object,
-    // required: true,
+    required: true,
   },
   sold: {
     type: Boolean,

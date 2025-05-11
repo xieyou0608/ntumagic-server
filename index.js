@@ -1,5 +1,4 @@
 const express = require("express");
-const cors = require('cors');
 const app = express();
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
@@ -24,12 +23,12 @@ mongoose
   });
 
 
-app.use(
-  cors({
-    origin: 'https://ntumagic.vercel.app/booking',
-    credentials: true
-  })
-);
+// app.use(
+//   cors({
+//     origin: 'https://ntumagic.vercel.app/booking',
+//     credentials: true
+//   })
+// );
 
 //middelwares
 app.use(express.json());

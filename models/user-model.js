@@ -47,6 +47,7 @@ const userSchema = new mongoose.Schema({
         area: String,
         row: Number,
         col: Number,
+        floor: Number,
         paid: Boolean,
         bookDate: Date,
       },

@@ -175,23 +175,46 @@ router.patch("/area", async (req, res) => {
     return res.status(404).send("Cannot find seat.");
   }
 
-  Seat.updateMany(
-    { position: { $in: positions } },
-    { area: newArea },
-    {
-      new: true,
-      runValidators: true,
-    }
-  )
-    .then(() => {
-      res.send("modify area success.");
-    })
-    .catch((e) => {
-      res.send({
-        success: false,
-        message: "Please try again",
-      });
+  // Seat.updateMany(
+  //   { position: { $in: positions } },
+  //   { area: newArea },
+  //   {
+  //     new: true,
+  //     runValidators: true,
+  //   }
+  // )
+  //   .then(() => {
+  //     res.send("modify area success.");
+  //   })
+  //   .catch((e) => {
+  //     res.send({
+  //       success: false,
+  //       message: "Please try again",
+  //     });
+  //   });
+  try {
+    const found = await Seat.countDocuments({ position: { $in: positions } });
+    if (found === 0)
+      return res
+        .status(404)
+        .json({ success: false, message: "找不到符合條件的座位" });
+
+    // update area
+    const result = await Seat.updateMany(
+      { position: { $in: positions } },
+      { $set: { area: newArea } },
+      { runValidators: true }
+    );
+
+    res.json({
+      success: true,
+      matched: result.matchedCount,
+      modified: result.modifiedCount,
     });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: "更新失敗，請稍後再試" });
+  }
 });
 
 //傳入user id，將其所有座位標記為已付款，並回傳修改過後的 doc
