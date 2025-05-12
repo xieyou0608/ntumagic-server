@@ -25,7 +25,7 @@ mongoose
 
 app.use(
   cors({
-    origin: 'https://ntumagic.vercel.app/booking',
+    origin: 'https://www.ntumagic.club',
     credentials: true
   })
 );
