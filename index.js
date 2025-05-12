@@ -23,17 +23,17 @@ mongoose
   });
 
 
-// app.use(
-//   cors({
-//     origin: 'https://ntumagic.vercel.app/booking',
-//     credentials: true
-//   })
-// );
+app.use(
+  cors({
+    origin: 'https://ntumagic.vercel.app/booking',
+    credentials: true
+  })
+);
 
 //middelwares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+// app.use(cors());
 
 // routes which are not protected
 app.use("/api/user", authRoute);
