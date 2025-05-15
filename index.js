@@ -11,7 +11,12 @@ const Seat = require("./models").seatModel;
 const passport = require("passport");
 require("./config/passport")(passport);
 const cors = require("cors");
-
+// const whitelist = [
+//   "http://localhost:3000",
+//   "https://www.ntumagic.club",
+//   "https://ntumagic.club",
+//   "https://ntumagic.vercel.app",
+// ];
 //connect to Database
 mongoose
   .connect(process.env.DB_CONNECT)
@@ -23,17 +28,20 @@ mongoose
   });
 
 
-app.use(
-  cors({
-    origin: 'https://www.ntumagic.club',
-    credentials: true
-  })
-);
+// app.use(
+//   cors({
+//     origin: (origin, cb) => {
+//       if (!origin || whitelist.includes(origin)) return cb(null, true);
+//       cb(new Error("Not allowed by CORS"));
+//     },
+//     credentials: true,
+//   })
+// );
 
 //middelwares
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(cors());
+app.use(cors());
 
 // routes which are not protected
 app.use("/api/user", authRoute);

@@ -5,6 +5,14 @@ const seatValidation = require("../validation").seatValidation;
 const { startSession } = require("mongoose");
 const crypto = require("crypto");
 const nodemailer = require("nodemailer");
+const moment = require("moment-timezone");
+moment.tz.setDefault("Asia/Taipei");
+
+const PHASE = {
+  TEST_END: moment("2025-05-16 20:00:00", "YYYY-MM-DD HH:mm:ss"),
+  NTU_END: moment("2025-05-17 20:00:00", "YYYY-MM-DD HH:mm:ss"),
+  PUBLIC_END: moment("2025-06-12 15:00:00", "YYYY-MM-DD HH:mm:ss"),
+};
 
 router.use((req, res, next) => {
   console.log("A request is coming into seat router");
@@ -30,6 +38,33 @@ router.post("/getSeat", (req, res) => {
     .catch((e) => {
       res.status(500).send("Cannot get seat data");
     });
+});
+
+
+router.use("/booking", (req, res, next) => {
+  const now = moment();
+  const email = (req.body.email || "").toLowerCase();
+
+  let phase;
+  if (now.isBefore(PHASE.TEST_END)) phase = "TEST";
+  else if (now.isBefore(PHASE.NTU_END)) phase = "NTU_ONLY";
+  else if (now.isBefore(PHASE.PUBLIC_END)) phase = "PUBLIC";
+  else phase = "CLOSED";
+  switch (phase) {
+    case "TEST":
+      break;
+    case "NTU_ONLY":
+      if (!email.endsWith("@ntu.edu.tw")) {
+        return res.status(403).json({ success: false, message: "目前為校內優先時段，請使用台大信箱" });
+      }
+      break;
+    case "PUBLIC":
+      break;
+    case "CLOSED":
+    default:
+      return res.status(403).json({ success: false, message: "線上劃位已截止，請至現場購票！" });
+  }
+  next();
 });
 
 //劃位: 檢查位子是否被劃走後，以Atomic方式更新座位及用戶資訊，然後response新的用戶資訊
